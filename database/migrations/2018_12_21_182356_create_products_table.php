@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->softDeletes();
+            $table->timestamps();
+
         });
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
@@ -41,6 +43,8 @@ class CreateProductsTable extends Migration
             $table->string('url');
             $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
+            $table->timestamps();
+
         });
     }
 
