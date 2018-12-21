@@ -1939,6 +1939,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -36772,28 +36777,6 @@ var render = function() {
     "div",
     [
       _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: !_vm.addingStatus,
-              expression: "!addingStatus"
-            }
-          ],
-          staticClass: "btn black btn-small",
-          attrs: { title: "Add Status" },
-          on: {
-            click: function($event) {
-              _vm.addingStatus = true
-            }
-          }
-        },
-        [_vm._v("Add "), _c("i", { staticClass: "fa fa-plus" })]
-      ),
-      _vm._v(" "),
-      _c(
         "table",
         {
           directives: [
@@ -36874,7 +36857,30 @@ var render = function() {
           }
         ],
         on: { reloadStatuses: _vm.onReloadStatuses, hideForms: _vm.onHideForms }
-      })
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "fixed-action-btn" }, [
+        _c(
+          "a",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.addingStatus,
+                expression: "!addingStatus"
+              }
+            ],
+            staticClass: "btn-floating btn-large red",
+            on: {
+              click: function($event) {
+                _vm.addingStatus = true
+              }
+            }
+          },
+          [_c("i", { staticClass: "fa fa-plus" })]
+        )
+      ])
     ],
     1
   )

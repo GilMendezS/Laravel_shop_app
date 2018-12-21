@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button title="Add Status" v-show="!addingStatus" @click="addingStatus = true" class="btn black btn-small">Add <i class="fa fa-plus"></i></button>
+        
         <table class="striped highlight centered responsive-table" v-show="!showingForms">
             <thead>
                 <tr>
@@ -29,6 +29,11 @@
             @hideForms="onHideForms"
         >
         </v-add-status>
+        <div class="fixed-action-btn">
+            <a v-show="!addingStatus" @click="addingStatus = true" class="btn-floating btn-large red">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
     </div>
 </template>
 <script>
