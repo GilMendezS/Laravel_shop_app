@@ -30,7 +30,7 @@
         >
         </v-add-status>
         <div class="fixed-action-btn">
-            <a v-show="!addingStatus" @click="addingStatus = true" class="btn-floating btn-large red">
+            <a v-show="!addingStatus" @click="addingStatus = true" class="btn-floating btn-large black">
                 <i class="fa fa-plus"></i>
             </a>
         </div>

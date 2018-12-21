@@ -36871,7 +36871,7 @@ var render = function() {
                 expression: "!addingStatus"
               }
             ],
-            staticClass: "btn-floating btn-large red",
+            staticClass: "btn-floating btn-large black",
             on: {
               click: function($event) {
                 _vm.addingStatus = true
