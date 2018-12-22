@@ -1836,12 +1836,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['statuses'],
   data: function data() {
     return {
-      product: new _models_product_js__WEBPACK_IMPORTED_MODULE_0__["default"]('', 'title', 'description', false, 0, false, 10, 'number', 'brand', 'barcode', '1', '200')
+      product: new _models_product_js__WEBPACK_IMPORTED_MODULE_0__["default"]('', '', '', false, 0, false, 10, '', '', '', '', '')
     };
   },
   mouted: function mouted() {
@@ -1852,13 +1853,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     onSubmit: function onSubmit() {
+      var _this = this;
+
       axios.post("/api/products", this.product).then(function (response) {
-        cosole.log(response.data);
+        console.log(response.data);
+
+        _this.$emit('reloadProducts');
       }).catch(function (err) {
         console.log(err);
       });
     },
-    cancelAdding: function cancelAdding() {}
+    cancelAdding: function cancelAdding() {
+      this.$emit('hideForms');
+    }
   },
   computed: {
     invalidForm: function invalidForm() {
@@ -1885,6 +1892,62 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1892,22 +1955,65 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      statuses: []
+      statuses: [],
+      products: [],
+      addingProduct: false,
+      productId: '',
+      pagination: null
     };
   },
   mounted: function mounted() {
     this.getStatuses();
+    this.getProducts("/api/products");
   },
   methods: {
-    getStatuses: function getStatuses() {
+    getProducts: function getProducts(url) {
       var _this = this;
 
-      axios.get("/api/statuses").then(function (response) {
+      axios.get(url).then(function (response) {
         console.log(response.data);
-        _this.statuses = response.data;
+        _this.products = response.data.data;
+        _this.pagination = response.data;
+        console.log(_this.products);
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    getStatuses: function getStatuses() {
+      var _this2 = this;
+
+      axios.get("/api/statuses").then(function (response) {
+        console.log(response.data);
+        _this2.statuses = response.data;
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    onReloadProducts: function onReloadProducts() {
+      this.getProducts(this.pagination.path);
+    },
+    onHideForms: function onHideForms() {
+      this.addingProduct = false;
+      this.productId = '';
+    },
+    onEditProduct: function onEditProduct(product) {},
+    onRemoveProduct: function onRemoveProduct(priduct) {},
+    nextPage: function nextPage() {
+      this.getProducts(this.pagination.next_page_url);
+    },
+    prevPage: function prevPage() {
+      this.getProducts(this.pagination.prev_page_url);
+    }
+  },
+  computed: {
+    showingForms: function showingForms() {
+      return this.addingProduct || this.productId != '';
+    },
+    canSeeeNextPage: function canSeeeNextPage() {
+      return this.pagination.next_page_url && this.pagination.next_page_url != null;
+    },
+    canSeePreviousPage: function canSeePreviousPage() {
+      return this.pagination.prev_page_url && this.pagination.prev_page_url != null;
     }
   }
 });
@@ -36710,6 +36816,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
     _c(
       "form",
       {
@@ -37127,7 +37235,17 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", [
+      _c("i", { staticClass: "fa fa-plus-circle" }),
+      _vm._v(" Add Product")
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -37149,9 +37267,211 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-add-product", { attrs: { statuses: _vm.statuses } })
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.showingForms,
+              expression: "!showingForms"
+            }
+          ]
+        },
+        [
+          _c(
+            "table",
+            { staticClass: "striped highlight centered responsive-table" },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.products, function(product) {
+                  return _c("tr", { key: product.id }, [
+                    _c("td", [_vm._v(_vm._s(product.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(product.description))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(product.price))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(product.status ? product.status.title : ""))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(product.featured ? "Yes" : "No"))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(product.inlimited ? "Yes" : "No"))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(product.stock))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(product.barcode))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(product.weight))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn black btn-small",
+                          on: {
+                            click: function($event) {
+                              _vm.onEditProduct(product)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-edit" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn red btn-small",
+                          on: {
+                            click: function($event) {
+                              _vm.onRemoveProduct(product)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-trash" })]
+                      )
+                    ])
+                  ])
+                }),
+                0
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "right" }, [
+            _c(
+              "ul",
+              { staticClass: "pagination" },
+              [
+                _c("li", { class: { disabled: !_vm.canSeePreviousPage } }, [
+                  _c(
+                    "a",
+                    { attrs: { href: "#!" }, on: { click: _vm.prevPage } },
+                    [_c("i", { staticClass: "fa fa-chevron-left" })]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.pagination.last_page, function(page) {
+                  return _c(
+                    "li",
+                    {
+                      key: page,
+                      staticClass: "waves-effect",
+                      class: { active: _vm.pagination.current_page == page }
+                    },
+                    [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#!" },
+                          on: {
+                            click: function($event) {
+                              _vm.getProducts(
+                                _vm.pagination.path + "?page=" + page
+                              )
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(page))]
+                      )
+                    ]
+                  )
+                }),
+                _vm._v(" "),
+                _c("li", { class: { disabled: !_vm.canSeeeNextPage } }, [
+                  _c(
+                    "a",
+                    { attrs: { href: "#!" }, on: { click: _vm.nextPage } },
+                    [_c("i", { staticClass: "fa fa-chevron-right" })]
+                  )
+                ])
+              ],
+              2
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("v-add-product", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.addingProduct,
+            expression: "addingProduct"
+          }
+        ],
+        attrs: { statuses: _vm.statuses },
+        on: { hideForms: _vm.onHideForms, reloadProducts: _vm.onReloadProducts }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "fixed-action-btn" }, [
+        _c(
+          "a",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: !_vm.addingProduct,
+                expression: "!addingProduct"
+              }
+            ],
+            staticClass: "btn-floating btn-large black",
+            on: {
+              click: function($event) {
+                _vm.addingProduct = true
+              }
+            }
+          },
+          [_c("i", { staticClass: "fa fa-plus" })]
+        )
+      ])
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Price")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Featured")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Inlimited")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Stock")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Barcode")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Weight")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
