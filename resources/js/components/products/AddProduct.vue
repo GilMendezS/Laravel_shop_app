@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h3><i class="fa fa-plus-circle"></i> Add Product</h3>
         <form @submit.prevent="onSubmit">
             <div class="input-field col s12">
                 <input v-model="product.name" placeholder="Title...." id="name" type="text" class="validate">
@@ -76,7 +77,7 @@ export default {
     props: ['statuses'],
     data(){
         return {
-            product: new Product('','title','description',false,0,false,10,'number','brand','barcode','1','200')
+            product: new Product('','','',false,0,false,10,'','','','','')
         }
     },
     mouted(){
@@ -89,14 +90,15 @@ export default {
         onSubmit(){
             axios.post(`/api/products`, this.product)
             .then(response => {
-                cosole.log(response.data);
+                console.log(response.data);
+                this.$emit('reloadProducts')
             })
             .catch(err => {
                 console.log(err)
             })
         },
         cancelAdding(){
-
+            this.$emit('hideForms');
         }
     },
     computed: {
