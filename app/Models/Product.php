@@ -24,9 +24,15 @@ class Product extends Model
         'weight'
     ];
     public function status(){
-        return $this->belongsTo(Status::class, 'status_id');
+        return $this->belongsTo(Status::class);
     }
     public function images(){
         return $this->hasMany(Image::class);
+    }
+    public function getPriceAttribute($value){
+        return $value / 100;
+    }
+    public function setPriceAttribute($value){
+        $this->attributes['price'] = $value * 100;
     }
 }
